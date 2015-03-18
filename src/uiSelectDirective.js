@@ -75,7 +75,7 @@ uis.directive('uiSelect',
         });
 
         // When inside a disabled fieldset, disabledWatch element will be disabled
-        var disabledWatch = angular.element("<input type='hidden' aria-label=''></input>");
+        var disabledWatch = angular.element("<input type='hidden' class='ui-select-disable-watch' aria-label=''></input>");
         element.append(disabledWatch);
 
         // Watch the disabled flag on disabledWatch, and set $select.disabled.
