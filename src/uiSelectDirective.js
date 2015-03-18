@@ -69,8 +69,17 @@ uis.directive('uiSelect',
         });
 
         attrs.$observe('disabled', function() {
-          // No need to use $eval() (thanks to ng-disabled) since we already get a boolean instead of a string
-          $select.disabled = attrs.disabled !== undefined ? attrs.disabled : false;
+            // No need to use $eval() (thanks to ng-disabled) since we already get a boolean instead of a string
+            $select.disabledFlag = attrs.disabled !== undefined ? attrs.disabled : false;
+            $select.disabled = $select.disabledFlag || $select.disabledSelector;
+        });
+
+        var disabledWatch = angular.element("<input type='hidden' aria-label=''></input>");
+        element.append(disabledWatch);
+
+        scope.$watch(function () { return disabledWatch.is(":disabled"); }, function (value) {
+          $select.disabledSelector = value;
+          $select.disabled = $select.disabledFlag || $select.disabledSelector;
         });
 
         attrs.$observe('resetSearchInput', function() {
