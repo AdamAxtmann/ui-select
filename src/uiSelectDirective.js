@@ -79,10 +79,18 @@ uis.directive('uiSelect',
         element.append(disabledWatch);
 
         // Watch the disabled flag on disabledWatch, and set $select.disabled.
-        scope.$watch(function () { return disabledWatch.is(":disabled"); }, function (value) {
-          $select.disabledSelector = value;
-          $select.disabled = $select.disabledFlag || $select.disabledSelector;
-        });
+        scope.$watch(
+          function () { 
+            if (disabledWatch.is) { 
+              return disabledWatch.is(":disabled"); // use jquery if available
+            } 
+            return !!element[0].querySelector('.ui-select-disable-watch:disabled');
+          }, 
+          function (value) {
+            $select.disabledSelector = value;
+            $select.disabled = $select.disabledFlag || $select.disabledSelector;
+          }
+        );
 
         attrs.$observe('resetSearchInput', function() {
           // $eval() is needed otherwise we get a string instead of a boolean
